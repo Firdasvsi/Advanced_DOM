@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мини-галерея</title>
+    <style>
+        /* Стили для миниатюр */
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        /* Стили для блока с полноразмерным изображением */
+        .full-size-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .full-size-image img {
+            max-width: 80%;
+            height: auto;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 5px;
+            background-color: #f0f0f0;
+            margin-bottom: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* Стили для списка цен */
+        #priceList {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .price-item {
+            padding: 5px;
+            background-color: #f0f0f0;
+            margin-bottom: 5px;
+        }
+
+        /* Стили для кнопок */
+        .sort-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Мини-галерея</h1>
+
+    <!-- Миниатюры -->
+    <div>
+        <img src="/images/котик 1.jpg" alt="image1" class="thumbnail" id="thumb1">
+        <img src="/images/котик 2.png" alt="image2" class="thumbnail" id="thumb2">
+        <img src="/images/котик3.jpg" alt="image3" class="thumbnail" id="thumb3">
+    </div>
+
+    <!-- Блок для полноразмерного изображения -->
+    <div class="full-size-image" id="full-size">
+        <p>Кликните на миниатюру, чтобы увидеть изображение в полном размере.</p>
+    </div>
+
+    <script>
+        // Получаем все миниатюры
+        const thumbnails = document.querySelectorAll('.thumbnail');
+
+        // Блок для полноразмерного изображения
+        const fullSizeBlock = document.getElementById('full-size');
+
+        // Обработчик клика для миниатюр
+        thumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', function () {
+                // Получаем URL изображения миниатюры
+                const imageUrl = this.src;
+
+                // Создаем новое изображение для полноразмерного отображения
+                const fullSizeImage = document.createElement('img');
+                fullSizeImage.src = imageUrl;
+
+                // Очищаем предыдущие изображения, если они были
+                fullSizeBlock.innerHTML = '';
+
+                // Добавляем новое изображение в блок
+                fullSizeBlock.appendChild(fullSizeImage);
+            });
+        });
+    </script>
+
+    <h3>Динамическое создание списка</h3>
+
+    <!-- Кнопки для добавления и удаления элементов -->
+    <button id="addButton">Добавить элемент</button>
+    <button id="removeButton">Удалить последний элемент</button>
+
+    <!-- Список -->
+    <ul id="myList"></ul>
+
+    <script>
+        // Получаем кнопки и список
+        const addButton = document.getElementById('addButton');
+        const removeButton = document.getElementById('removeButton');
+        const myList = document.getElementById('myList');
+
+        // Обработчик клика для кнопки "Добавить элемент"
+        addButton.addEventListener('click', function () {
+            const newItem = document.createElement('li');
+            newItem.textContent = 'Новый элемент списка';
+            myList.appendChild(newItem);
+        });
+
+        // Обработчик клика для кнопки "Удалить последний элемент"
+        removeButton.addEventListener('click', function () {
+            const lastItem = myList.lastElementChild;
+            if (lastItem) {
+                myList.removeChild(lastItem);
+            }
+        });
+    </script>
+
+    <h3>Сортировка цен</h3>
+
+    <!-- Кнопки для сортировки -->
+    <button id="sortAscButton" class="sort-button">Сортировать по возрастанию</button>
+    <button id="sortDescButton" class="sort-button">Сортировать по убыванию</button>
+
+    <!-- Список цен -->
+    <ul id="priceList"></ul>
+
+    <script>
+        // Исходный массив цен
+        const prices = [100, 500, 250, 750, 300];
+
+        // Получаем элементы страницы
+        const priceList = document.getElementById('priceList');
+        const sortAscButton = document.getElementById('sortAscButton');
+        const sortDescButton = document.getElementById('sortDescButton');
+
+        // Функция для отображения списка цен на странице
+        function displayPrices() {
+            priceList.innerHTML = '';  // Очищаем список перед его обновлением
+            prices.forEach(price => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('price-item');  // Добавляем класс для стилей
+                listItem.textContent = `Цена: ${price} руб.`;
+                priceList.appendChild(listItem);
+            });
+        }
+
+        // Функция сортировки по возрастанию
+        function sortPricesAsc() {
+            prices.sort((a, b) => a - b);
+            displayPrices();
+        }
+
+        // Функция сортировки по убыванию
+        function sortPricesDesc() {
+            prices.sort((a, b) => b - a);
+            displayPrices();
+        }
+
+        // Отображаем список цен при загрузке страницы
+        displayPrices();
+
+        // Обработчики событий для кнопок сортировки
+        sortAscButton.addEventListener('click', sortPricesAsc);
+        sortDescButton.addEventListener('click', sortPricesDesc);
+    </script>
+</body>
+
+</html>
